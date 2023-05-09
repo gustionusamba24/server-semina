@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
-const { model, Schema } = mongoose;
 
-let ticketCategorySchema = Schema({
+const ticketCategoriesSchema = new mongoose.Schema({
   type: {
     type: String,
-    required: [true, "ticket type is required"],
+    required: [true, "Tipe tiket harus diisi"],
   },
   price: {
     type: Number,
@@ -14,7 +13,7 @@ let ticketCategorySchema = Schema({
     type: Number,
     default: 0,
   },
-  statusTicketCategory: {
+  statusTicketCategories: {
     type: Boolean,
     enum: [true, false],
     default: true,
@@ -24,31 +23,31 @@ let ticketCategorySchema = Schema({
   },
 });
 
-let EventSchema = Schema(
+const EventSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: [true, "title is required"],
+      required: [true, "Judul harus diisi"],
       minlength: 3,
       maxlength: 50,
     },
     date: {
       type: Date,
-      required: [true, "date and time are required"],
+      required: [true, "Tanggal dan waktu harus diisi"],
     },
     about: {
       type: String,
     },
     tagline: {
       type: String,
-      required: [true, "tagline is required"],
+      required: [true, "Tagline harus diisi"],
     },
     keyPoint: {
       type: [String],
     },
     venueName: {
       type: String,
-      required: [true, "venue name is required"],
+      required: [true, "Tempat acara harus diisi"],
     },
     statusEvent: {
       type: String,
@@ -56,7 +55,7 @@ let EventSchema = Schema(
       default: "Draft",
     },
     tickets: {
-      type: [ticketCategorySchema],
+      type: [ticketCategoriesSchema],
       required: true,
     },
     image: {
@@ -74,8 +73,13 @@ let EventSchema = Schema(
       ref: "Talent",
       required: true,
     },
+    organizer: {
+      type: mongoose.Types.ObjectId,
+      ref: "Organizer",
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-module.exports = model("Event", EventSchema);
+module.exports = mongoose.model("Event", EventSchema);

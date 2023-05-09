@@ -1,4 +1,3 @@
-const { StatusCodes } = require("http-status-codes");
 const Categories = require("./../../api/v1/categories/model");
 const { NotFoundError, BadRequestError } = require("./../../errors");
 
