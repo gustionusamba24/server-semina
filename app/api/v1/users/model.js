@@ -22,7 +22,7 @@ let userSchema = new Schema(
     },
     role: {
       type: String,
-      enum: ["admin", "organizer", "user"],
+      enum: ["admin", "organizer", "owner"],
       default: "admin",
     },
     organizer: {

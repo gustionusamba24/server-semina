@@ -12,12 +12,15 @@ const getAllCategories = async (req) => {
 const createCategory = async (req) => {
   const { name } = req.body;
 
-  //   Check category name
-  const check = await Categories.findOne({ name });
+  // cari categories dengan field name
+  const check = await Categories.findOne({
+    name,
+    organizer: req.user.organizer,
+  });
 
-  //   if the check true / data categories already exist then we display a bad request error with a duplicate name category message
+  // apa bila check true / data categories sudah ada maka kita tampilkan error bad request dengan message kategori nama duplikat
   if (check)
-    throw new BadRequestError("Duplicate category names occur");
+    throw new BadRequestError("duplicate name category occur");
 
   const result = await Categories.create({
     name,
@@ -29,6 +32,7 @@ const createCategory = async (req) => {
 
 const getOneCategory = async (req) => {
   const { id } = req.params;
+
   const result = await Categories.findOne({
     _id: id,
     organizer: req.user.organizer,
@@ -46,32 +50,26 @@ const updateCategory = async (req) => {
   const { id } = req.params;
   const { name } = req.body;
 
-  const checkCategory = await Categories.findOne({
-    _id: id,
-  });
-
-  // jika id result false / null maka akan menampilkan error `Tidak ada Kategori dengan id` yang dikirim client
-  if (!checkCategory)
-    throw new NotFoundError(
-      `There are no data category with id: ${id}`
-    );
-
   // cari categories dengan field name dan id selain dari yang dikirim dari params
   const check = await Categories.findOne({
     name,
-    _id: { $ne: id },
     organizer: req.user.organizer,
+    _id: { $ne: id },
   });
 
   // apa bila check true / data categories sudah ada maka kita tampilkan error bad request dengan message kategori nama duplikat
   if (check)
-    throw new BadRequestError("Duplicate category names occur");
+    throw new BadRequestError("Duplicate name category occur");
 
   const result = await Categories.findOneAndUpdate(
     { _id: id },
     { name },
     { new: true, runValidators: true }
   );
+
+  // jika id result false / null maka akan menampilkan error `Tidak ada Kategori dengan id` yang dikirim client
+  if (!result)
+    throw new NotFoundError(`there is no category with id :  ${id}`);
 
   return result;
 };
