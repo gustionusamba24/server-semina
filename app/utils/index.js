@@ -1,8 +1,12 @@
 const { createJWT, isTokenValid } = require("./jwt");
-const createUserToken = require("./createUserToken");
+const {
+  createUserToken,
+  createParticipantToken,
+} = require("./createUserToken");
 
 module.exports = {
   createJWT,
   isTokenValid,
   createUserToken,
+  createParticipantToken,
 };
