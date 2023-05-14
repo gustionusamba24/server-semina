@@ -137,6 +137,10 @@ const getAllOrders = async (req) => {
   return result;
 };
 
+/**
+ *TODO: Tugas send email invoice
+ *TODO: Ambil data email dari personal detail
+ **/
 const checkoutOrder = async (req) => {
   const { event, personalDetail, payment, tickets } = req.body;
 

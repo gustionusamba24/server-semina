@@ -95,7 +95,7 @@ const deletePayment = async (req) => {
   if (!result)
     throw new NotFoundError(`There is no payment with id :  ${id}`);
 
-  await result.remove();
+  await result.deleteOne();
 
   return result;
 };
